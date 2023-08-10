@@ -25,8 +25,12 @@ export class CourseService {
     return `This action returns all curso`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} curso`;
+  findByUserId(id: number) {
+    return this.prisma.course.findMany({
+      where: {
+        userId: id,
+      },
+    });
   }
 
   update(id: number, updateCourseDto: UpdateCourseDto) {
