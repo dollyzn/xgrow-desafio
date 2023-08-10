@@ -14,7 +14,7 @@ export class UserService {
       ...createUserDto,
     };
 
-    const userExists = await this.prisma.user.findFirst({
+    const userExists = await this.prisma.user.findUnique({
       where: { email: data.email },
     });
 
@@ -29,7 +29,29 @@ export class UserService {
     };
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
+    const userExists = await this.prisma.user.findUnique({
+      where: { email: updateUserDto.email },
+    });
+
+    if (userExists && userExists.id !== id) {
+      throw new HttpException(
+        'User with this email already exists',
+        HttpStatus.CONFLICT,
+      );
+    }
+
+    const data: Prisma.UserUpdateInput = {
+      ...updateUserDto,
+    };
+
+    const updatedUser = await this.prisma.user.update({
+      where: { id },
+      data,
+    });
+
+    return {
+      ...updatedUser,
+    };
   }
 }
