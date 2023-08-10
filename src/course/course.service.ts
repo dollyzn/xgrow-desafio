@@ -21,8 +21,23 @@ export class CourseService {
     };
   }
 
-  findAll() {
-    return `This action returns all curso`;
+  async findMany(queryParams: Record<string, any>): Promise<Course[]> {
+    const filters: Prisma.CourseWhereInput = {};
+
+    if (queryParams.name) {
+      filters.name = { contains: queryParams.name };
+    }
+    if (queryParams.description) {
+      filters.description = { contains: queryParams.description };
+    }
+    if (queryParams.category) {
+      filters.category = { contains: queryParams.category };
+    }
+    if (queryParams.type) {
+      filters.type = { contains: queryParams.type };
+    }
+
+    return this.prisma.course.findMany({ where: filters });
   }
 
   findByUserId(id: number) {
@@ -33,11 +48,15 @@ export class CourseService {
     });
   }
 
-  update(id: number, updateCourseDto: UpdateCourseDto) {
-    return `This action updates a #${id} curso`;
-  }
+  // update(id: number, updateCourseDto: UpdateCourseDto) {
+  //   return `This action updates a #${id} curso`;
+  // }
 
   remove(id: number) {
-    return `This action removes a #${id} curso`;
+    return this.prisma.course.delete({
+      where: {
+        id: id,
+      },
+    });
   }
 }
