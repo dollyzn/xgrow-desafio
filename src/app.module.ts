@@ -4,10 +4,10 @@ import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
-import { CursoModule } from './curso/curso.module';
+import { CourseModule } from './course/course.module';
 
 @Module({
-  imports: [UserModule, PrismaModule, AuthModule, CursoModule],
+  imports: [UserModule, PrismaModule, AuthModule, CourseModule],
   controllers: [],
   providers: [
     {
