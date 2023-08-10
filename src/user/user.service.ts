@@ -58,4 +58,15 @@ export class UserService {
   findByEmail(email: string) {
     return this.prisma.user.findUnique({ where: { email } });
   }
+
+  async updateUserLastAccessDate(id: number): Promise<void> {
+    await this.prisma.user.update({
+      where: { id },
+      data: {
+        email: undefined,
+        name: undefined,
+        accessDate: Math.floor(new Date().getTime() / 1000),
+      },
+    });
+  }
 }
