@@ -54,4 +54,8 @@ export class UserService {
       ...updatedUser,
     };
   }
+
+  findByEmail(email: string) {
+    return this.prisma.user.findUnique({ where: { email } });
+  }
 }
